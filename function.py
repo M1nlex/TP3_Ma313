@@ -7,8 +7,6 @@ def migenerale(m, n, b, x0, epsilon, nitermax):
     while i <= nitermax and e > epsilon:
         i += 1
         u = n @ x0 + b
-        #print(u)
-
         x1 = np.linalg.solve(m, u)
 
         e = np.linalg.norm(x1-x0)
@@ -19,10 +17,11 @@ def migenerale(m, n, b, x0, epsilon, nitermax):
 
 def mijacobi(a, b, x0, epsilon, nitermax):
 
-    m = np.diag(np.diag(a))
-    n = m - a
-    #print(a, m, n)
-
+    d = np.diag(np.diag(a))
+    l = -np.tril(a-d)
+    u = -np.triu(a-d)
+    m = d
+    n = l + u
     print(migenerale(m, n, b, x0, epsilon, nitermax))
 
 
