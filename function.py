@@ -49,3 +49,9 @@ def Matrice_A2 (n):
             A[i,j] = 1/(1 + 3*abs(i-j))
     print (A)
     return A
+
+#Test :
+
+matrice_test_A = [[1,3,2,4],[5,3,0,4],[10,7,2,3],[4,7,8,2]]
+matrice_test_X = [[7,8,15,6]]
+matrice_test_B = [[85,83,174,216]]
