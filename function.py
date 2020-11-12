@@ -35,7 +35,10 @@ def test1():
 
 
 
-def Matrice_A (n):
+
+#Création des matrices : A TESTER
+
+def Matrice_A1 (n):
     A = np.zeros(n,n)
     for i in range (n):
         for j in range (n):
@@ -45,6 +48,23 @@ def Matrice_A (n):
                 A[i,j] = 3
     print (A)
     return A
+
+def Vecteur_b (n):
+    b = np.zeros(n,1)
+    for i in range (n):
+        b[i,1] = cos(i/8)
+    print (b)
+    return b
+
+def Matrice_A2 (n):
+    A = np.zeros(n,n)
+    for i in range (n):
+        for j in range (n):
+            A[i,j] = 1/(1 + 3*abs(i-j))
+    print (A)
+    return A
+
+#Test :
 
 matrice_test_A = [[1,3,2,4],[5,3,0,4],[10,7,2,3],[4,7,8,2]]
 matrice_test_X = [[7,8,15,6]]
