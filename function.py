@@ -1,9 +1,10 @@
 import numpy as np
 
+
 def migenerale(m, n, b, x0, epsilon, nitermax):
     i = 0
     e = 10
-    while i < nitermax or e <= epsilon:
+    while i <= nitermax or e <= epsilon:
         i += 1
         u = n * x0 + b
 
