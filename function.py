@@ -10,7 +10,7 @@ def migenerale(m, n, b, x0, epsilon, nitermax):
 
         x1 = np.linalg.solve(m, u)
 
-        e = abs(x1-x0)
+        e = np.linalg.norm(x1-x0)
         x0 = x1
 
         print(i)
