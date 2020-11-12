@@ -39,7 +39,7 @@ def Vecteur_b (n):
     b = np.zeros(n,1)
     for i in range (n):
         b[i,1] = cos(i/8)
-        print (b)
+    print (b)
     return b
 
 def Matrice_A2 (n):
