@@ -13,8 +13,6 @@ def migenerale(m, n, b, x0, epsilon, nitermax):
         e = np.linalg.norm(x1-x0)
         x0 = x1
 
-        print(i)
-
     return x0, i, e
 
 
