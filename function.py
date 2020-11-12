@@ -15,7 +15,7 @@ def migenerale(m, n, b, x0, epsilon, nitermax):
 
         print(i)
 
-    return x1, i, e
+    return x0, i, e
 
 
 def test1():
