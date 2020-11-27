@@ -23,7 +23,7 @@ def mijacobi(a, b, x0, epsilon, nitermax):
 
 
 def MIGaussSeidel(a, b, x0, epsilon, Nitermax):
-    d = np.diag(a)
+    d = np.diag(np.diag(a))
     e = np.tril(a)-d
     f = np.triu(a)-d
     m = d - e
@@ -32,7 +32,7 @@ def MIGaussSeidel(a, b, x0, epsilon, Nitermax):
 
 
 def MIRelaxation(a, b, x0, epsilon, Nitermax):
-    d = np.diag(a)
+    d = np.diag(np.diag(a))
     e = np.tril(a)-d
     f = np.triu(a)-d
     w = 1
