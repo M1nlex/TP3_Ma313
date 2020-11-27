@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def migenerale(m, n, b, x0, epsilon, nitermax):
     i = 0
     e = 10
@@ -13,13 +14,14 @@ def migenerale(m, n, b, x0, epsilon, nitermax):
 
     return x0, i, e
 
+
 def mijacobi(a, b, x0, epsilon, nitermax):
     d = np.diag(np.diag(a))
     e = -np.tril(a-d)
     f = -np.triu(a-d)
     m = d
     n = e + f
-    return(migenerale(m, n, b, x0, epsilon, nitermax))
+    return migenerale(m, n, b, x0, epsilon, nitermax)
 
 
 def MIGaussSeidel(a, b, x0, epsilon, nitermax):
@@ -28,7 +30,7 @@ def MIGaussSeidel(a, b, x0, epsilon, nitermax):
     f = np.triu(a)-d
     m = d - e
     n = f
-    return(migenerale(m, n, b, x0, epsilon, nitermax))
+    return migenerale(m, n, b, x0, epsilon, nitermax)
 
 
 def MIRelaxation(a, b, x0, epsilon, nitermax):
