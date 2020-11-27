@@ -25,12 +25,22 @@ def mijacobi(a, b, x0, epsilon, nitermax):
 
 
 def MIGaussSeidel(a, b, x0, epsilon, Nitermax):
-    m = np.tril(a)
-    n = a-m
-    return(migenerale(m,-n,b,x0,epsilon,Nitermax))
+    d = np.diag(a)
+    e = np.tril(a)-d
+    f = np.triu(a)-d
+    m = d - e
+    n = f
+    return(migenerale(m, n, b, x0, epsilon, nitermax))
 
-def MIRelaxation(A, b, x0, epsilon, Nitermax):
-    pass
+
+def MIRelaxation(a, b, x0, epsilon, Nitermax):
+    d = np.diag(a)
+    e = np.tril(a)-d
+    f = np.triu(a)-d
+    w = 1
+    m = (1/w)*d - e
+    n = ((1/w)-1)*d + f
+    return(migenerale(m, n, b, x0, epsilon, nitermax))
 
 def test1():
     print("oui")
