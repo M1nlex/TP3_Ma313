@@ -5,7 +5,7 @@ def migenerale(m, n, b, x0, epsilon, nitermax):
     e = 10
     while i <= nitermax and e > epsilon:
         i += 1
-        u = n @ x0 + b
+        u = np.dot(n,x0) + b
         x1 = np.linalg.solve(m, u)
 
         e = np.linalg.norm(x1-x0)
@@ -76,9 +76,9 @@ def Matrice_A2 (n):
 
 #Test :
 
-matrice_test_A = [[1,3,2,4],[5,3,0,4],[10,7,2,3],[4,7,8,2]]
-matrice_test_X = [[7,8,15,6]]
-matrice_test_B = [[85,83,174,216]]
+matrice_test_A = np.array([[1,3,2,4],[5,3,0,4],[10,7,2,3],[4,7,8,2]])
+matrice_test_X = np.transpose( np.array([[7,8,15,6]]) )
+matrice_test_B = np.transpose( np.array([[85,83,174,216]]) )
 
 #Autre test
 matrice_test_A1 = [[2, 1], [5, 7]]
