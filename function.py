@@ -6,7 +6,7 @@ def migenerale(m, n, b, x0, epsilon, nitermax):
     e = 10
     while i <= nitermax and e > epsilon:
         i += 1
-        u = np.dot(n,x0) + b
+        u = np.dot(n, x0) + b
         x1 = np.linalg.solve(m, u)
 
         e = np.linalg.norm(x1-x0)
