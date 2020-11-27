@@ -35,12 +35,13 @@ def MIGaussSeidel(a, b, x0, epsilon, nitermax):
 
 def MIRelaxation(a, b, x0, epsilon, nitermax):
     d = np.diag(np.diag(a))
-    e = np.tril(a)-d
-    f = np.triu(a)-d
+    e = -np.tril(a - d)
+    f = -np.triu(a - d)
     w = 1
     m = (1/w)*d - e
     n = ((1/w)-1)*d + f
-    return(migenerale(m, n, b, x0, epsilon, nitermax))
+    return migenerale(m, n, b, x0, epsilon, nitermax)
+
 
 def test1():
     print("oui")
