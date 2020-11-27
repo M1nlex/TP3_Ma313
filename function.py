@@ -18,17 +18,27 @@ def mijacobi(a, b, x0, epsilon, nitermax):
     e = -np.tril(a-d)
     f = -np.triu(a-d)
     m = d
-    n = e + f
-    print(migenerale(m, n, b, x0, epsilon, nitermax))
+    n = l + u
+    return(migenerale(m, n, b, x0, epsilon, nitermax))
 
-def MIGaussSeidel(A,b,x0,epsilon,Nitermax):
-    L = np.tril(A)
-    U = A-L
-    x,nbreiter,err = migenerale(L,-U,b,x0,epsilon,Nitermax)
-    print(x)
-    print(nbreiter)
-    print(err)
 
+def MIGaussSeidel(a, b, x0, epsilon, Nitermax):
+    d = np.diag(a)
+    e = np.tril(a)-d
+    f = np.triu(a)-d
+    m = d - e
+    n = f
+    return(migenerale(m, n, b, x0, epsilon, nitermax))
+
+
+def MIRelaxation(a, b, x0, epsilon, Nitermax):
+    d = np.diag(a)
+    e = np.tril(a)-d
+    f = np.triu(a)-d
+    w = 1
+    m = (1/w)*d - e
+    n = ((1/w)-1)*d + f
+    return(migenerale(m, n, b, x0, epsilon, nitermax))
 
 def test1():
     print("oui")
