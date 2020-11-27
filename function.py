@@ -26,8 +26,8 @@ def mijacobi(a, b, x0, epsilon, nitermax):
 
 def MIGaussSeidel(a, b, x0, epsilon, nitermax):
     d = np.diag(np.diag(a))
-    e = np.tril(a)-d
-    f = np.triu(a)-d
+    e = -np.tril(a-d)
+    f = -np.triu(a-d)
     m = d - e
     n = f
     return migenerale(m, n, b, x0, epsilon, nitermax)
