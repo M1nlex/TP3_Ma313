@@ -18,7 +18,7 @@ def mijacobi(a, b, x0, epsilon, nitermax):
     e = -np.tril(a-d)
     f = -np.triu(a-d)
     m = d
-    n = l + u
+    n = e + f
     return(migenerale(m, n, b, x0, epsilon, nitermax))
 
 
