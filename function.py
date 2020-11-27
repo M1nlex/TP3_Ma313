@@ -22,7 +22,7 @@ def mijacobi(a, b, x0, epsilon, nitermax):
     return(migenerale(m, n, b, x0, epsilon, nitermax))
 
 
-def MIGaussSeidel(a, b, x0, epsilon, Nitermax):
+def MIGaussSeidel(a, b, x0, epsilon, nitermax):
     d = np.diag(np.diag(a))
     e = np.tril(a)-d
     f = np.triu(a)-d
@@ -31,7 +31,7 @@ def MIGaussSeidel(a, b, x0, epsilon, Nitermax):
     return(migenerale(m, n, b, x0, epsilon, nitermax))
 
 
-def MIRelaxation(a, b, x0, epsilon, Nitermax):
+def MIRelaxation(a, b, x0, epsilon, nitermax):
     d = np.diag(np.diag(a))
     e = np.tril(a)-d
     f = np.triu(a)-d
@@ -79,6 +79,11 @@ def Matrice_A2 (n):
 matrice_test_A = [[1,3,2,4],[5,3,0,4],[10,7,2,3],[4,7,8,2]]
 matrice_test_X = [[7,8,15,6]]
 matrice_test_B = [[85,83,174,216]]
+
+#Autre test
+matrice_test_A1 = [[2, 1], [5, 7]]
+matrice_test_B1 = np.array([[11, 13]]).T
+matrice_test_X1 = np.array([[1, 1]]).T
 
 A_test = [[2,1,0],[1,2,1],[0,1,2]]
 X_test = np.transpose([[1,2,3]])
