@@ -1,6 +1,5 @@
 import numpy as np
 
-
 def migenerale(m, n, b, x0, epsilon, nitermax):
     i = 0
     e = 10
@@ -14,16 +13,13 @@ def migenerale(m, n, b, x0, epsilon, nitermax):
 
     return x0, i, e
 
-
 def mijacobi(a, b, x0, epsilon, nitermax):
-
     d = np.diag(np.diag(a))
-    l = -np.tril(a-d)
-    u = -np.triu(a-d)
+    e = -np.tril(a-d)
+    f = -np.triu(a-d)
     m = d
-    n = l + u
+    n = e + f
     print(migenerale(m, n, b, x0, epsilon, nitermax))
-
 
 def MIGaussSeidel(A,b,x0,epsilon,Nitermax):
     L = np.tril(A)
@@ -67,8 +63,13 @@ def Matrice_A2 (n):
     print (A)
     return A
 
+
 #Test :
 
 matrice_test_A = [[1,3,2,4],[5,3,0,4],[10,7,2,3],[4,7,8,2]]
 matrice_test_X = [[7,8,15,6]]
 matrice_test_B = [[85,83,174,216]]
+
+A_test = [[2,1,0],[1,2,1],[0,1,2]]
+X_test = np.transpose([[1,2,3]])
+B_test = np.transpose([[4,8,8]])
