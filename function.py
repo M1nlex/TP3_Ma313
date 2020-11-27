@@ -25,13 +25,17 @@ def mijacobi(a, b, x0, epsilon, nitermax):
     print(migenerale(m, n, b, x0, epsilon, nitermax))
 
 
-
-
+def MIGaussSeidel(A,b,x0,epsilon,Nitermax):
+    L = np.tril(A)
+    U = A-L
+    x,nbreiter,err = migenerale(L,-U,b,x0,epsilon,Nitermax)
+    print(x)
+    print(nbreiter)
+    print(err)
 
 
 def test1():
     print("oui")
-
 
 
 
@@ -68,12 +72,3 @@ def Matrice_A2 (n):
 matrice_test_A = [[1,3,2,4],[5,3,0,4],[10,7,2,3],[4,7,8,2]]
 matrice_test_X = [[7,8,15,6]]
 matrice_test_B = [[85,83,174,216]]
-
-
-def MIGaussSeidel(A,b,x0,epsilon,Nitermax):
-    L = np.tril(A)
-    U = A-L
-    x,nbreiter,err = migenerale(L,-U,b,x0,epsilon,Nitermax)
-    print(x)
-    print(nbreiter)
-    print(err)
