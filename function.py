@@ -1,4 +1,5 @@
 import numpy as np
+import time
 
 
 def migenerale(m, n, b, x0, epsilon, nitermax):
@@ -33,11 +34,11 @@ def MIGaussSeidel(a, b, x0, epsilon, nitermax):
     return migenerale(m, n, b, x0, epsilon, nitermax)
 
 
-def MIRelaxation(a, b, x0, epsilon, nitermax):
+def MIRelaxation(a, b, x0, epsilon, nitermax, w = 1):
     d = np.diag(np.diag(a))
     e = -np.tril(a - d)
     f = -np.triu(a - d)
-    w = 1
+    #w = 1
     m = (1/w)*d - e
     n = ((1/w)-1)*d + f
     return migenerale(m, n, b, x0, epsilon, nitermax)
@@ -46,6 +47,25 @@ def MIRelaxation(a, b, x0, epsilon, nitermax):
 def test1():
     print("oui")
 
+
+def w_optimal(n_max = 10, epsilon = 10**(-7) , nitermax = 100 , nb_matrix_max = 10):
+    for n in range(2,n_max)
+        L_time_moyen
+        for i in range (1, 2, 0.1):
+            L_time = []
+            for j in range(0,nb_matrix_max):
+                A = digonale_dominante(n)
+                B = np.transpose(np.random.randn(1,n))
+                x0 = np.ones((n,1))
+
+                t0 = time.perf_counter()
+                MIRelaxation(A, B, x0, epsilon, nitermax w = i)
+                t1 = time.perf_counter()
+                t = t1 - t0
+
+                L_time.append(t)
+            t_moyen = sum(L_time)/nb_matrix_max
+        L_time_moyen.append(t_moyen)
 
 
 #Création des matrices : A TESTER
@@ -77,17 +97,22 @@ def Matrice_A2 (n):
     return A
 
 
+
+
 #Test :
 
 matrice_test_A = np.array([[1,3,2,4],[5,3,0,4],[10,7,2,3],[4,7,8,2]])
-matrice_test_X = np.transpose( np.array([[7,8,15,6]]) )
+matrice_test_X_resu = np.transpose( np.array([[7,8,15,6]]) )
+matrice_test_X = np.transpose( np.array([[1,1,1,1]]) )
 matrice_test_B = np.transpose( np.array([[85,83,174,216]]) )
 
 #Autre test
 matrice_test_A1 = [[2, 1], [5, 7]]
 matrice_test_B1 = np.array([[11, 13]]).T
 matrice_test_X1 = np.array([[1, 1]]).T
+matrice_test_X1_resu = np.array([[7.111, -3.222]]).T
 
 A_test = [[2,1,0],[1,2,1],[0,1,2]]
-X_test = np.transpose([[1,2,3]])
-B_test = np.transpose([[4,8,8]])
+X_test_resu = np.transpose( np.array([[1,2,3]]) )
+X_test = np.transpose( np.array([[1,1,1]]) )
+B_test = np.transpose( np.array([[4,8,8]]) )
