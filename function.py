@@ -1,5 +1,6 @@
 import numpy as np
 import time
+import matplotlib.pyplot as plt
 
 
 def migenerale(m, n, b, x0, epsilon, nitermax):
@@ -48,24 +49,46 @@ def test1():
     print("oui")
 
 
-def w_optimal(n_max = 10, epsilon = 10**(-7) , nitermax = 100 , nb_matrix_max = 10):
-    for n in range(2,n_max)
-        L_time_moyen
-        for i in range (1, 2, 0.1):
+def w_optimal(n_max = 10, epsilon = 10**(-7) , nitermax = 100 , nb_matrix_max = 10 , precision_i = 10):
+    for n in range(2,n_max):
+        L_time_moyen = []
+        L_i = []
+        for i in np.linspace(1 , 2 , precision_i):
             L_time = []
             for j in range(0,nb_matrix_max):
-                A = digonale_dominante(n)
+                #Création matrices aléatoires
+                A = diagonale_dominante(n)
                 B = np.transpose(np.random.randn(1,n))
                 x0 = np.ones((n,1))
 
+                #Temps de calcul
                 t0 = time.perf_counter()
-                MIRelaxation(A, B, x0, epsilon, nitermax w = i)
+                MIRelaxation(A, B, x0, epsilon, nitermax , w = i)
                 t1 = time.perf_counter()
                 t = t1 - t0
 
                 L_time.append(t)
+            #Ajout de la valeur de w
+            L_i.append(i)
+
+            #Calcul et ajout du temps moyen sur 'nb_matrix_max' matrices
             t_moyen = sum(L_time)/nb_matrix_max
-        L_time_moyen.append(t_moyen)
+            L_time_moyen.append(t_moyen)
+
+        #Calcul du w minimum
+        t_mini = min(L_time_moyen)
+        indice = L_time_moyen.index(t_mini)
+        w_opti = L_i[indice]
+        print("Le w_opti pour la taille "+str(n)+" est : "+str(w_opti))
+
+        plt.plot(L_i, L_time_moyen, ".:", label = "Temps pour la taille "+str(n))
+
+    plt.ylabel("Temps de calcul (s)")
+    plt.xlabel("valeur de w")
+    plt.legend(loc = "upper left")
+    plt.title("Temps de résolution d'un système en fonction de la taille n de A \n", fontsize=12)
+    plt.show()
+
 
 
 #Création des matrices : A TESTER
@@ -96,7 +119,7 @@ def Matrice_A2 (n):
     print (A)
     return A
 
-def diagonale_dominante(n,x):
+def diagonale_dominante(n,x=1):
     A = np.zeros((n,n))
     for i in range (0,n):
         S = 0
