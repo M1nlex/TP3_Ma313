@@ -43,6 +43,18 @@ def MIRelaxation(a, b, x0, epsilon, nitermax):
     return migenerale(m, n, b, x0, epsilon, nitermax)
 
 
+def erreur(a, b, x0, epsilon, nitermax, methode):
+
+    if methode == 1:
+        x, i, e = mijacobi(a, b, x0, epsilon, nitermax)
+    if methode == 2:
+        x, i, e = MIGaussSeidel(a, b, x0, epsilon, nitermax)
+    if methode == 3:
+        x, i, e = MIRelaxation(a, b, x0, epsilon, nitermax)
+    return np.linalg.norm(np.dot(a, x) - b)
+
+
+
 def test1():
     print("oui")
 
