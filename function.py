@@ -45,6 +45,18 @@ def MIRelaxation(a, b, x0, epsilon, nitermax, w = 1):
     return migenerale(m, n, b, x0, epsilon, nitermax)
 
 
+def erreur(a, b, x0, epsilon, nitermax, methode):
+
+    if methode == 1:
+        x, i, e = mijacobi(a, b, x0, epsilon, nitermax)
+    if methode == 2:
+        x, i, e = MIGaussSeidel(a, b, x0, epsilon, nitermax)
+    if methode == 3:
+        x, i, e = MIRelaxation(a, b, x0, epsilon, nitermax)
+    return np.linalg.norm(np.dot(a, x) - b)
+
+
+
 def test1():
     print("oui")
 
@@ -94,7 +106,7 @@ def w_optimal(n_max = 10, epsilon = 10**(-7) , nitermax = 100 , nb_matrix_max = 
 #Création des matrices : A TESTER
 
 def Matrice_A1 (n):
-    A = np.zeros(n,n)
+    A = np.zeros((n,n))
     for i in range (n):
         for j in range (n):
             if i != j :
@@ -105,14 +117,14 @@ def Matrice_A1 (n):
     return A
 
 def Vecteur_b (n):
-    b = np.zeros(n,1)
+    b = np.zeros((n,1))
     for i in range (n):
-        b[i,1] = cos(i/8)
+        b[i,0] = np.cos(i/8)
     print (b)
     return b
 
 def Matrice_A2 (n):
-    A = np.zeros(n,n)
+    A = np.zeros((n,n))
     for i in range (n):
         for j in range (n):
             A[i,j] = 1/(1 + 3*abs(i-j))
@@ -131,20 +143,19 @@ def diagonale_dominante(n,x=1):
     return A
 
 
-
-#Test :
-
+#Test (Alexandre)
 matrice_test_A = np.array([[1,3,2,4],[5,3,0,4],[10,7,2,3],[4,7,8,2]])
 matrice_test_X_resu = np.transpose( np.array([[7,8,15,6]]) )
 matrice_test_X = np.transpose( np.array([[1,1,1,1]]) )
 matrice_test_B = np.transpose( np.array([[85,83,174,216]]) )
 
-#Autre test
+#Autre test (Romaric)
 matrice_test_A1 = [[2, 1], [5, 7]]
 matrice_test_B1 = np.array([[11, 13]]).T
 matrice_test_X1 = np.array([[1, 1]]).T
 matrice_test_X1_resu = np.array([[7.111, -3.222]]).T
 
+#Encore un autre test (Marianne)
 A_test = [[2,1,0],[1,2,1],[0,1,2]]
 X_test_resu = np.transpose( np.array([[1,2,3]]) )
 X_test = np.transpose( np.array([[1,1,1]]) )
