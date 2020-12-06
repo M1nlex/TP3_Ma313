@@ -76,6 +76,16 @@ def Matrice_A2 (n):
     print (A)
     return A
 
+def diagonale_dominante(n,x):
+    A = np.zeros((n,n))
+    for i in range (0,n):
+        S = 0
+        for j in range (0,n):
+            A[i,j] = x*np.random.random()
+            S += abs(A[i,j])
+        A[i,i] = S + x
+    #print (A)
+    return A
 
 #Test :
 
