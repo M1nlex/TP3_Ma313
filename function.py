@@ -83,12 +83,14 @@ def test1():
     print("oui")
 
 
-def w_optimal(n_max = 10, epsilon = 10**(-7) , nitermax = 100 , nb_matrix_max = 10 , precision_i = 10):
+def w_optimal(n_max = 10, epsilon = 10**(-7) , nitermax = 100 , nb_matrix_max = 10 , precision_i = 10 , type = 0):
     for n in range(2,n_max):
         L_time_moyen = []
+        L_iterr_moyen = []
         L_i = []
         for i in np.linspace(1 , 2 , precision_i):
             L_time = []
+            L_iterr = []
             for j in range(0,nb_matrix_max):
                 #Création matrices aléatoires
                 A = diagonale_dominante(n)
@@ -97,11 +99,12 @@ def w_optimal(n_max = 10, epsilon = 10**(-7) , nitermax = 100 , nb_matrix_max = 
 
                 #Temps de calcul
                 t0 = time.perf_counter()
-                MIRelaxation(A, B, x0, epsilon, nitermax , w = i)
+                x,iterr,eps = MIRelaxation(A, B, x0, epsilon, nitermax , w = i)
                 t1 = time.perf_counter()
                 t = t1 - t0
 
                 L_time.append(t)
+                L_iterr.append(iterr)
             #Ajout de la valeur de w
             L_i.append(i)
 
@@ -109,18 +112,38 @@ def w_optimal(n_max = 10, epsilon = 10**(-7) , nitermax = 100 , nb_matrix_max = 
             t_moyen = sum(L_time)/nb_matrix_max
             L_time_moyen.append(t_moyen)
 
-        #Calcul du w minimum
-        t_mini = min(L_time_moyen)
-        indice = L_time_moyen.index(t_mini)
-        w_opti = L_i[indice]
-        print("Le w_opti pour la taille "+str(n)+" est : "+str(w_opti))
+            #Calcul et ajout nbre itération moyen
+            iterr_moyen = sum(L_iterr)/nb_matrix_max
+            L_iterr_moyen.append(iterr_moyen)
 
-        plt.plot(L_i, L_time_moyen, ".:", label = "Temps pour la taille "+str(n))
+        if type == 0:
+            #Calcul du w minimum par le temps
+            t1_mini = min(L_time_moyen)
+            indice1 = L_time_moyen.index(t1_mini)
+            w_opti1 = L_i[indice1]
+            print("Le w_opti par le temps pour la taille "+str(n)+" est : "+str(w_opti1))
 
-    plt.ylabel("Temps de calcul (s)")
+            #Courbes par le temps
+            plt.plot(L_i, L_time_moyen, ".:", label = "Temps pour la taille "+str(n))
+
+        if type == 1:
+            #Calcul du w minimum par le temps
+            t2_mini = min(L_iterr_moyen)
+            indice2 = L_iterr_moyen.index(t2_mini)
+            w_opti2 = L_i[indice2]
+            print("Le w_opti par le nbr d'itérations pour la taille "+str(n)+" est : "+str(w_opti2))
+
+            #Courbes le nbr d'itérations
+            plt.plot(L_i, L_iterr_moyen, ".:", label = "Nbr itér pour la taille "+str(n))
+    if type == 0:
+        plt.ylabel("Temps de calcul (s)")
+        plt.title("Temps nécessaire pour la résolution d'un système en fonction du coefficient w\n", fontsize=12)
+    if type == 1 :
+        plt.ylabel("Nbr d'itérations")
+        plt.title("Nombre d'itérations pour la résolution d'un système en fonction du coefficient w\n", fontsize=12)
     plt.xlabel("valeur de w")
     plt.legend(loc = "upper left")
-    plt.title("Temps de résolution d'un système en fonction de la taille n de A \n", fontsize=12)
+
     plt.show()
 
 
