@@ -65,10 +65,12 @@ def w_optimal(n_max = 10, epsilon = 10**(-7) , nitermax = 100 , nb_matrix_max = 
     for n in range(2,n_max):
         L_time_moyen = []
         L_iterr_moyen = []
+        L_vconverg_moyen = []
         L_i = []
         for i in np.linspace(1 , 2 , precision_i):
             L_time = []
             L_iterr = []
+            L_vconverg = []
             for j in range(0,nb_matrix_max):
                 #Création matrices aléatoires
                 A = diagonale_dominante(n)
@@ -83,6 +85,8 @@ def w_optimal(n_max = 10, epsilon = 10**(-7) , nitermax = 100 , nb_matrix_max = 
 
                 L_time.append(t)
                 L_iterr.append(iterr)
+                if iterr!=0:
+                    L_vconverg.append(1/iterr)
             #Ajout de la valeur de w
             L_i.append(i)
 
@@ -93,6 +97,10 @@ def w_optimal(n_max = 10, epsilon = 10**(-7) , nitermax = 100 , nb_matrix_max = 
             #Calcul et ajout nbre itération moyen
             iterr_moyen = sum(L_iterr)/nb_matrix_max
             L_iterr_moyen.append(iterr_moyen)
+
+            #Calcul vitesse convergence moyenne
+            vconverg_moyen = sum(L_vconverg)/nb_matrix_max
+            L_vconverg_moyen.append(vconverg_moyen)
 
         if type == 0:
             #Calcul du w minimum par le temps
@@ -113,12 +121,18 @@ def w_optimal(n_max = 10, epsilon = 10**(-7) , nitermax = 100 , nb_matrix_max = 
 
             #Courbes le nbr d'itérations
             plt.plot(L_i, L_iterr_moyen, ".:", label = "Nbr itér pour la taille "+str(n))
+
+        if type == 2:
+            plt.plot(L_i, L_vconverg_moyen, ".:", label = "Vitesse de convergence pour la taille "+str(n))
     if type == 0:
         plt.ylabel("Temps de calcul (s)")
         plt.title("Temps nécessaire pour la résolution d'un système en fonction du coefficient w\n", fontsize=12)
     if type == 1 :
         plt.ylabel("Nbr d'itérations")
         plt.title("Nombre d'itérations pour la résolution d'un système en fonction du coefficient w\n", fontsize=12)
+    if type == 2:
+        plt.ylabel("Vitesse de convergence")
+        plt.title("Vitesse de convergence pour la résolution d'un système en fonction du coefficient w\n", fontsize=12)
     plt.xlabel("valeur de w")
     plt.legend(loc = "upper left")
 
