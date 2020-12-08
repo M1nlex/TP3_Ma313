@@ -3,6 +3,7 @@ import time
 import matplotlib.pyplot as plt
 
 
+
 def migenerale(m, n, b, x0, epsilon, nitermax):
     i = 0
     e = 10
@@ -45,15 +46,42 @@ def MIRelaxation(a, b, x0, epsilon, nitermax, w = 1):
     return migenerale(m, n, b, x0, epsilon, nitermax)
 
 
-def erreur(a, b, x0, epsilon, nitermax, methode):
+def erreur(a, b, x0, epsilon, nitermax, methode, type_erreur):
 
     if methode == 1:
         x, i, e = mijacobi(a, b, x0, epsilon, nitermax)
     if methode == 2:
         x, i, e = MIGaussSeidel(a, b, x0, epsilon, nitermax)
     if methode == 3:
-        x, i, e = MIRelaxation(a, b, x0, epsilon, nitermax)
-    return np.linalg.norm(np.dot(a, x) - b)
+        x, i, e = MIRelaxation(a, b, x0, epsilon, nitermax, w=1)
+    if type_erreur == 1:
+        return np.mean(np.abs(np.dot(a, x) - b))
+    if type_erreur == 2:
+        return np.linalg.norm(np.dot(a, x) - b)
+
+
+def erreur_graph(n_max=100, nb_matrice=10, epsilon=10**-6, nitermax=100, methode=2, type_erreur=1):
+
+    e_moyen = []
+    x = []
+    for n in range(2, n_max):
+        print(n)
+        liste_e = []
+        for j in range(0, nb_matrice):
+            # Création matrices aléatoires
+            a = diagonale_dominante(n)
+            b = np.transpose(np.random.randn(1, n))
+            x0 = np.ones((n, 1))
+
+            e = erreur(a, b, x0, epsilon, nitermax, methode, type_erreur)
+            liste_e.append(e)
+        x.append(n)
+        e_moyen.append([np.mean(liste_e)])
+
+    plt.plot(x, e_moyen)
+    plt.xlabel("Taille")
+    plt.ylabel("Erreur")
+    plt.show()
 
 
 
