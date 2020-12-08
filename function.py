@@ -3,6 +3,7 @@ import time
 import matplotlib.pyplot as plt
 
 
+
 def migenerale(m, n, b, x0, epsilon, nitermax):
     i = 0
     e = 10
@@ -52,8 +53,29 @@ def erreur(a, b, x0, epsilon, nitermax, methode):
     if methode == 2:
         x, i, e = MIGaussSeidel(a, b, x0, epsilon, nitermax)
     if methode == 3:
-        x, i, e = MIRelaxation(a, b, x0, epsilon, nitermax)
+        x, i, e = MIRelaxation(a, b, x0, epsilon, nitermax, w=1)
     return np.linalg.norm(np.dot(a, x) - b)
+
+
+def erreur_graph(n_max=100, nb_matrice=10, epsilon=10**-7, nitermax=1000, methode=1):
+
+    e_moyen = []
+    x = []
+    for n in range(2, n_max):
+        print(n)
+        e = []
+        for j in range(0, nb_matrice):
+            # Création matrices aléatoires
+            a = diagonale_dominante(n)
+            b = np.transpose(np.random.randn(1, n))
+            x0 = np.ones((n, 1))
+
+            e.append(erreur(a, b, x0, epsilon, nitermax, methode))
+        x.append(n)
+        e_moyen.append(np.mean(e))
+
+    plt.plot(x, e_moyen)
+    plt.show()
 
 
 
