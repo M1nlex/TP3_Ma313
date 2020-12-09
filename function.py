@@ -167,6 +167,47 @@ def w_optimal(n_max = 10, epsilon = 10**(-7) , nitermax = 100 , nb_matrix_max = 
     plt.show()
 
 
+def i_en_fonction_de_e(type_matrice=1, precision_max=20, n=100):
+    e = []
+    n_jacobi = []
+    n_gauss = []
+    if type_matrice == 1:
+        print('Méthode 1')
+        a = Matrice_A1(n)
+        b = Vecteur_b(n)
+        x0 = np.ones((n, 1))
+
+    elif type_matrice == 2:
+        print('Méthode 2')
+        a = Matrice_A2(n)
+        b = Vecteur_b(n)
+        x0 = np.ones((n, 1))
+
+    else:
+        print('Méthode aléatoire')
+        a = diagonale_dominante(n)
+        b = np.transpose(np.random.randn(1, n))
+        x0 = np.ones((n, 1))
+
+    for i in range(2, precision_max):
+        i = 10**(-i)
+        print(i)
+        e.append(i)
+
+        x, iteraton, ep = mijacobi(a, b, x0, i, 1000)
+        n_jacobi.append(iteraton)
+
+        x, iteraton, ep = MIGaussSeidel(a, b, x0, i, 1000)
+        n_gauss.append(iteraton)
+    print(e, n_jacobi, n_gauss)
+    plt.plot(e, n_jacobi, label='Jacobi')
+    plt.plot(e, n_gauss, label='Gauss')
+    plt.xscale('log')
+    plt.legend()
+    plt.gca().invert_xaxis()
+    plt.xlabel('Précision')
+    plt.ylabel('Iteration')
+    plt.show()
 
 #Création des matrices : A TESTER
 
@@ -178,14 +219,14 @@ def Matrice_A1 (n):
                 A[i,j] = 1/(12 + (3*1 - 5*j)**2)
             elif i == j :
                 A[i,j] = 3
-    print (A)
+    #print (A)
     return A
 
 def Vecteur_b (n):
     b = np.zeros((n,1))
     for i in range (n):
         b[i,0] = np.cos(i/8)
-    print (b)
+    #print (b)
     return b
 
 def Matrice_A2 (n):
@@ -193,7 +234,7 @@ def Matrice_A2 (n):
     for i in range (n):
         for j in range (n):
             A[i,j] = 1/(1 + 3*abs(i-j))
-    print (A)
+    #print (A)
     return A
 
 def diagonale_dominante(n,x=1):
