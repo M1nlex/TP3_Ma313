@@ -3,6 +3,7 @@ import time
 import matplotlib.pyplot as plt
 
 
+
 def migenerale(m, n, b, x0, epsilon, nitermax):
     i = 0
     e = 10
@@ -45,15 +46,42 @@ def MIRelaxation(a, b, x0, epsilon, nitermax, w = 1):
     return migenerale(m, n, b, x0, epsilon, nitermax)
 
 
-def erreur(a, b, x0, epsilon, nitermax, methode):
+def erreur(a, b, x0, epsilon, nitermax, methode, type_erreur):
 
     if methode == 1:
         x, i, e = mijacobi(a, b, x0, epsilon, nitermax)
     if methode == 2:
         x, i, e = MIGaussSeidel(a, b, x0, epsilon, nitermax)
     if methode == 3:
-        x, i, e = MIRelaxation(a, b, x0, epsilon, nitermax)
-    return np.linalg.norm(np.dot(a, x) - b)
+        x, i, e = MIRelaxation(a, b, x0, epsilon, nitermax, w=1)
+    if type_erreur == 1:
+        return np.mean(np.abs(np.dot(a, x) - b))
+    if type_erreur == 2:
+        return np.linalg.norm(np.dot(a, x) - b)
+
+
+def erreur_graph(n_max=100, nb_matrice=10, epsilon=10**-6, nitermax=100, methode=2, type_erreur=1):
+
+    e_moyen = []
+    x = []
+    for n in range(2, n_max):
+        print(n)
+        liste_e = []
+        for j in range(0, nb_matrice):
+            # Création matrices aléatoires
+            a = diagonale_dominante(n)
+            b = np.transpose(np.random.randn(1, n))
+            x0 = np.ones((n, 1))
+
+            e = erreur(a, b, x0, epsilon, nitermax, methode, type_erreur)
+            liste_e.append(e)
+        x.append(n)
+        e_moyen.append([np.mean(liste_e)])
+
+    plt.plot(x, e_moyen)
+    plt.xlabel("Taille")
+    plt.ylabel("Erreur")
+    plt.show()
 
 
 
@@ -65,10 +93,12 @@ def w_optimal(n_max = 10, epsilon = 10**(-7) , nitermax = 100 , nb_matrix_max = 
     for n in range(2,n_max):
         L_time_moyen = []
         L_iterr_moyen = []
+        L_vconverg_moyen = []
         L_i = []
         for i in np.linspace(1 , 2 , precision_i):
             L_time = []
             L_iterr = []
+            L_vconverg = []
             for j in range(0,nb_matrix_max):
                 #Création matrices aléatoires
                 A = diagonale_dominante(n)
@@ -83,6 +113,8 @@ def w_optimal(n_max = 10, epsilon = 10**(-7) , nitermax = 100 , nb_matrix_max = 
 
                 L_time.append(t)
                 L_iterr.append(iterr)
+                if iterr!=0:
+                    L_vconverg.append(1/iterr)
             #Ajout de la valeur de w
             L_i.append(i)
 
@@ -93,6 +125,10 @@ def w_optimal(n_max = 10, epsilon = 10**(-7) , nitermax = 100 , nb_matrix_max = 
             #Calcul et ajout nbre itération moyen
             iterr_moyen = sum(L_iterr)/nb_matrix_max
             L_iterr_moyen.append(iterr_moyen)
+
+            #Calcul vitesse convergence moyenne
+            vconverg_moyen = sum(L_vconverg)/nb_matrix_max
+            L_vconverg_moyen.append(vconverg_moyen)
 
         if type == 0:
             #Calcul du w minimum par le temps
@@ -113,12 +149,18 @@ def w_optimal(n_max = 10, epsilon = 10**(-7) , nitermax = 100 , nb_matrix_max = 
 
             #Courbes le nbr d'itérations
             plt.plot(L_i, L_iterr_moyen, ".:", label = "Nbr itér pour la taille "+str(n))
+
+        if type == 2:
+            plt.plot(L_i, L_vconverg_moyen, ".:", label = "Vitesse de convergence pour la taille "+str(n))
     if type == 0:
         plt.ylabel("Temps de calcul (s)")
         plt.title("Temps nécessaire pour la résolution d'un système en fonction du coefficient w\n", fontsize=12)
     if type == 1 :
         plt.ylabel("Nbr d'itérations")
         plt.title("Nombre d'itérations pour la résolution d'un système en fonction du coefficient w\n", fontsize=12)
+    if type == 2:
+        plt.ylabel("Vitesse de convergence")
+        plt.title("Vitesse de convergence pour la résolution d'un système en fonction du coefficient w\n", fontsize=12)
     plt.xlabel("valeur de w")
     plt.legend(loc = "upper left")
 
