@@ -84,9 +84,91 @@ def erreur_graph(n_max=100, nb_matrice=10, epsilon=10**-6, nitermax=100, methode
     plt.show()
 
 
-
 def test1():
     print("oui")
+
+
+def comparaison_convergence(taille_max=30, nb_par_taille=10, epsilon=10**(-7), nitermax=100, precision_w=10, type=0):
+    L_iterr_moyen_gauss = []
+    L_vconverg_moyen_gauss = []
+    L_iterr_moyen_jacobi = []
+    L_vconverg_moyen_jacobi = []
+    L_N = []
+    L_values_tot = []
+    for i in range(2,taille_max):
+        L_N.append(i)
+        L_iterr_gauss = []
+        L_vconverg_gauss = []
+        L_iterr_jacobi = []
+        L_vconverg_jacobi = []
+        L_values = []
+        for j in range(0, nb_par_taille):
+            A = diagonale_dominante(i)
+            B = np.transpose(np.random.randn(1,i))
+            x0 = np.ones((i,1))
+            L_values.append([A,B,x0])
+
+            x1, iterr1, eps1 = MIGaussSeidel(A, B, x0, epsilon, nitermax)
+            x2, iterr2, eps2 = mijacobi(A, B, x0, epsilon, nitermax)
+
+            L_iterr_gauss.append(iterr1)
+            L_vconverg_gauss.append(1/iterr1)
+
+            L_iterr_jacobi.append(iterr2)
+            L_vconverg_jacobi.append(1/iterr2)
+        L_values_tot.append(L_values)
+
+        #Ajout moyennes Gauss
+        iterr_moyen_gauss = sum(L_iterr_gauss)/nb_par_taille
+        L_iterr_moyen_gauss.append(iterr_moyen_gauss)
+
+        vconverg_moyen_gauss = sum(L_vconverg_gauss)/nb_par_taille
+        L_vconverg_moyen_gauss.append(vconverg_moyen_gauss)
+
+        #Ajout moyennes Jacobi
+        iterr_moyen_jacobi = sum(L_iterr_jacobi)/nb_par_taille
+        L_iterr_moyen_jacobi.append(iterr_moyen_jacobi)
+
+        vconverg_moyen_jacobi = sum(L_vconverg_jacobi)/nb_par_taille
+        L_vconverg_moyen_jacobi.append(vconverg_moyen_jacobi)
+
+    #Ajouts courbes Gauss et Jacobi
+    if type == 0:
+        plt.plot(L_N , L_iterr_moyen_gauss , "-", label = "Gauss")
+        plt.plot(L_N , L_iterr_moyen_jacobi , "-", label = "Jacobi")
+    if type == 1:
+        plt.plot(L_N , L_vconverg_moyen_gauss , "-", label = "Gauss")
+        plt.plot(L_N , L_vconverg_moyen_jacobi , "-", label = "Jacobi")
+
+    #Boucle pour les courbes de la méthode relaxation selon w
+    for w in np.linspace(1, 2, precision_w):
+        L_iterr_moyen = []
+        L_vconverg_moyen = []
+        for i in L_values_tot:
+            L_iterr = []
+            L_vconverg = []
+            for j in i:
+                x,iterr,eps = MIRelaxation(j[0], j[1], j[2], epsilon, nitermax , w = w)
+                L_iterr.append(iterr)
+                L_vconverg.append(1/iterr)
+            iterr_moyen = sum(L_iterr)/nb_par_taille
+            L_iterr_moyen.append(iterr_moyen)
+
+            vconverg_moyen = sum(L_vconverg)/nb_par_taille
+            L_vconverg_moyen.append(vconverg_moyen)
+        if type == 0:
+            plt.plot(L_N , L_iterr_moyen, ".:", label = "Relaxation (w="+str(w)+")")
+        if type == 1:
+            plt.plot(L_N , L_vconverg_moyen, ".:", label = "Relaxation (w="+str(w)+")")
+    if type == 0:
+        plt.ylabel("Nombre ittérations")
+    if type == 1:
+        plt.ylabel("Vitesse de convergence")
+    plt.xlabel("Taille matrice")
+    #plt.legend(loc = "upper left")
+    plt.legend(loc = 'lower right')
+
+    plt.show()
 
 
 def w_optimal(n_max = 10, epsilon = 10**(-7) , nitermax = 100 , nb_matrix_max = 10 , precision_i = 10 , type = 0):
@@ -166,10 +248,12 @@ def w_optimal(n_max = 10, epsilon = 10**(-7) , nitermax = 100 , nb_matrix_max = 
 
     plt.show()
 
+
 def rayon_spectral(A):
     L1, L2 = np.linalg.eig(A)
     R = max( [abs(number) for number in L1] )
     return R
+
 
 def w_parfait(A):
     #Calcul de M^-1 * N pour le rayon spectral
@@ -198,12 +282,14 @@ def Matrice_A1 (n):
     print (A)
     return A
 
+
 def Vecteur_b (n):
     b = np.zeros((n,1))
     for i in range (n):
         b[i,0] = np.cos(i/8)
     print (b)
     return b
+
 
 def Matrice_A2 (n):
     A = np.zeros((n,n))
@@ -212,6 +298,7 @@ def Matrice_A2 (n):
             A[i,j] = 1/(1 + 3*abs(i-j))
     print (A)
     return A
+
 
 def diagonale_dominante(n,x=1):
     A = np.zeros((n,n))
