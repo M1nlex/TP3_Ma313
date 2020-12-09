@@ -166,6 +166,10 @@ def w_optimal(n_max = 10, epsilon = 10**(-7) , nitermax = 100 , nb_matrix_max = 
 
     plt.show()
 
+def rayon_spectral(A):
+    L1, L2 = np.linalg.eig(A)
+    R = max( [abs(number) for number in L1] )
+    return R
 
 def i_en_fonction_de_e(type_matrice=1, precision_max=20, n=100):
     e = []
@@ -209,9 +213,24 @@ def i_en_fonction_de_e(type_matrice=1, precision_max=20, n=100):
     plt.ylabel('Iteration')
     plt.show()
 
+
+def w_parfait(A):
+    #Calcul de M^-1 * N pour le rayon spectral
+    d = np.diag(np.diag(A))
+    e = -np.tril(A-d)
+    f = -np.triu(A-d)
+    m = d
+    n = e + f
+    m1 = np.linalg.inv(m)
+    B = np.dot(m1, n)
+    #Rayon spectral et w
+    r = rayon_spectral(B)
+    w = 1 + (( r/( 1+np.sqrt( 1-(r**2) ) ) )**2)
+    return w
+
 #Création des matrices : A TESTER
 
-def Matrice_A1 (n):
+def Matrice_A1 (n=100):
     A = np.zeros((n,n))
     for i in range (n):
         for j in range (n):
@@ -222,14 +241,14 @@ def Matrice_A1 (n):
     #print (A)
     return A
 
-def Vecteur_b (n):
+def Vecteur_b (n=100):
     b = np.zeros((n,1))
     for i in range (n):
         b[i,0] = np.cos(i/8)
     #print (b)
     return b
 
-def Matrice_A2 (n):
+def Matrice_A2 (n=100):
     A = np.zeros((n,n))
     for i in range (n):
         for j in range (n):
