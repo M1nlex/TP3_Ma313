@@ -317,6 +317,25 @@ def i_en_fonction_de_e(type_matrice=1, precision_max=20, n=100):
     plt.xlabel('Précision')
     plt.ylabel('Précision effective')
     plt.show()
+'''def JCV_test(n=3,p=1000):
+    JCV = 0
+    for k in range (2,p):
+        A = [[1,-7,11],[-1,12,-19],[0,-3,5]]
+        d = np.diag(np.diag(A))
+        e = -np.tril(A-d)
+        f = -np.triu(A-d)
+        m = d
+        N = e + f
+        m1 = np.linalg.inv(m)
+        J = np.dot(m1, N)
+        R = rayon_spectral(J)
+        if R < 1:
+            print ("J CV")
+            JCV+=1
+        else:
+            pass
+        A = A+np.ones(3,3)
+    return JCV'''
 
 def w_parfait(A):
     #Calcul de M^-1 * N pour le rayon spectral
