@@ -88,7 +88,7 @@ def test1():
     print("oui")
 
 
-def comparaison_convergence(taille_max=30, nb_par_taille=10, epsilon=10**(-7), nitermax=100, precision_w=10, type=0):
+def comparaison_convergence(taille_max=30, nb_par_taille=10, epsilon=10**(-7), nitermax=100, precision_w=10, type=0, type_intervalle=0):
     L_iterr_moyen_gauss = []
     L_vconverg_moyen_gauss = []
     L_iterr_moyen_jacobi = []
@@ -141,8 +141,11 @@ def comparaison_convergence(taille_max=30, nb_par_taille=10, epsilon=10**(-7), n
         plt.plot(L_N , L_vconverg_moyen_jacobi , "-", label = "Jacobi")
 
     #Boucle pour les courbes de la méthode relaxation selon w
-    #for w in np.linspace(1, 2, precision_w):
-    for w in np.linspace(0.1, 2, precision_w, endpoint=0):
+    if type_intervalle == 0:
+        space = np.linspace(1, 2, precision_w)
+    if type_intervalle == 1:
+        space  = np.linspace(0.1, 2, precision_w, endpoint=0)
+    for w in space :
         L_iterr_moyen = []
         L_vconverg_moyen = []
         for i in L_values_tot:
@@ -310,7 +313,8 @@ def w_parfait(A):
     B = np.dot(m1, n)
     #Rayon spectral et w
     r = rayon_spectral(B)
-    w = 1 + (( r/( 1+np.sqrt( 1-(r**2) ) ) )**2)
+    print(r)
+    w = 2/( 1+np.sqrt(1-(r**2)) )
     return w
 
 
