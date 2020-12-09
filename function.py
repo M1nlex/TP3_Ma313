@@ -165,7 +165,7 @@ def comparaison_convergence(taille_max=30, nb_par_taille=10, epsilon=10**(-7), n
         if type == 1:
             plt.plot(L_N , L_vconverg_moyen, ".:", label = "Relaxation (w="+str(w)+")")
     if type == 0:
-        plt.ylabel("Nombre ittérations")
+        plt.ylabel("Nombre itérations")
     if type == 1:
         plt.ylabel("Vitesse de convergence")
     plt.xlabel("Taille matrice")
@@ -317,6 +317,7 @@ def i_en_fonction_de_e(type_matrice=1, precision_max=20, n=100):
     plt.xlabel('Précision')
     plt.ylabel('Précision effective')
     plt.show()
+
 '''def JCV_test(n=3,p=1000):
     JCV = 0
     for k in range (2,p):
@@ -429,7 +430,7 @@ def comparaison_convergence_wparfait(taille_max=30, nb_par_taille=10, epsilon=10
 
     #Réglages graphique
     if type == 0:
-        plt.ylabel("Nombre ittérations")
+        plt.ylabel("Nombre itérations")
     if type == 1:
         plt.ylabel("Vitesse de convergence")
     plt.xlabel("Taille matrice")
@@ -439,8 +440,7 @@ def comparaison_convergence_wparfait(taille_max=30, nb_par_taille=10, epsilon=10
     plt.show()
 
 
-# Création des matrices : A TESTER
-
+# Création des matrices : TESTEES
 
 def Matrice_A1 (n=100):
     A = np.zeros((n,n))
