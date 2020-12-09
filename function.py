@@ -170,7 +170,7 @@ def w_optimal(n_max = 10, epsilon = 10**(-7) , nitermax = 100 , nb_matrix_max = 
 
 #Création des matrices : A TESTER
 
-def Matrice_A1 (n):
+def Matrice_A1 (n=100):
     A = np.zeros((n,n))
     for i in range (n):
         for j in range (n):
@@ -181,14 +181,14 @@ def Matrice_A1 (n):
     print (A)
     return A
 
-def Vecteur_b (n):
+def Vecteur_b (n=100):
     b = np.zeros((n,1))
     for i in range (n):
         b[i,0] = np.cos(i/8)
     print (b)
     return b
 
-def Matrice_A2 (n):
+def Matrice_A2 (n=100):
     A = np.zeros((n,n))
     for i in range (n):
         for j in range (n):
