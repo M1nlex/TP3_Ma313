@@ -46,6 +46,13 @@ def MIRelaxation(a, b, x0, epsilon, nitermax, w = 1):
     return migenerale(m, n, b, x0, epsilon, nitermax)
 
 
+'''def MIRichardson(A, b, x0, epsilon, nitermax, w = 1):
+    p = np.shape(A)
+    m = (1/w) * np.identity(p[0])
+    n = m - A
+    return migenerale(m, n, b, x0, epsilon, nitermax)'''
+
+
 def erreur(a, b, x0, epsilon, nitermax, methode, type_erreur):
 
     if methode == 1:
@@ -481,6 +488,37 @@ def diagonale_dominante(n,x=1):
         A[i,i] = S + x
     #print (A)
     return A
+
+
+def TestCV (A):
+    #Jacobi :
+    d = np.diag(np.diag(A))
+    e = -np.tril(A-d)
+    f = -np.triu(A-d)
+    m = d
+    n = e + f
+    J = np.dot(np.linalg.inv(m),n)
+    print(" J =",J)
+    R = rayon_spectral(J)
+    print (" ρ(J) =",R)
+    if R < 1:
+        print(" ρ(J)<1 donc Jacobi convergente \n")
+
+    #Gauss Seidel :
+    d2 = np.diag(np.diag(A))
+    e2 = -np.tril(A-d2)
+    f2 = -np.triu(A-d2)
+    m2 = d2 - e2
+    n2 = f2
+    L1 = np.dot(np.linalg.inv(m2),n2)
+    print(" L1 =",L1)
+    R2 = rayon_spectral(L1)
+    print (" ρ(L1) =",R2)
+    if R2 < 1:
+        print(" ρ(L1)<1 donc GS convergente \n")
+
+
+
 
 
 #Test (Alexandre)
