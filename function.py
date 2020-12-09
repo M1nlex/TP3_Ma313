@@ -263,6 +263,8 @@ def i_en_fonction_de_e(type_matrice=1, precision_max=20, n=100):
     e = []
     n_jacobi = []
     n_gauss = []
+    erreur_jacobi = []
+    erruer_gauss = []
     if type_matrice == 1:
         print('Méthode 1')
         a = Matrice_A1(n)
@@ -274,6 +276,7 @@ def i_en_fonction_de_e(type_matrice=1, precision_max=20, n=100):
         a = Matrice_A2(n)
         b = Vecteur_b(n)
         x0 = np.ones((n, 1))
+        print(a)
 
     else:
         print('Méthode aléatoire')
@@ -288,19 +291,51 @@ def i_en_fonction_de_e(type_matrice=1, precision_max=20, n=100):
 
         x, iteraton, ep = mijacobi(a, b, x0, i, 1000)
         n_jacobi.append(iteraton)
+        erreur_jacobi.append(np.mean(np.abs(np.dot(a, x) - b)))
 
         x, iteraton, ep = MIGaussSeidel(a, b, x0, i, 1000)
         n_gauss.append(iteraton)
+        erruer_gauss.append(np.mean(np.abs(np.dot(a, x) - b)))
     print(e, n_jacobi, n_gauss)
     plt.plot(e, n_jacobi, label='Jacobi')
     plt.plot(e, n_gauss, label='Gauss')
     plt.xscale('log')
+    #plt.yscale('log')
     plt.legend()
     plt.gca().invert_xaxis()
     plt.xlabel('Précision')
     plt.ylabel('Iteration')
     plt.show()
 
+    plt.plot(e, erreur_jacobi, label='Jacobi')
+    plt.plot(e, erruer_gauss, label='Gauss')
+    plt.xscale('log')
+    plt.yscale('log')
+    plt.legend()
+    plt.gca().invert_xaxis()
+    plt.gca().invert_yaxis()
+    plt.xlabel('Précision')
+    plt.ylabel('Précision effective')
+    plt.show()
+'''def JCV_test(n=3,p=1000):
+    JCV = 0
+    for k in range (2,p):
+        A = [[1,-7,11],[-1,12,-19],[0,-3,5]]
+        d = np.diag(np.diag(A))
+        e = -np.tril(A-d)
+        f = -np.triu(A-d)
+        m = d
+        N = e + f
+        m1 = np.linalg.inv(m)
+        J = np.dot(m1, N)
+        R = rayon_spectral(J)
+        if R < 1:
+            print ("J CV")
+            JCV+=1
+        else:
+            pass
+        A = A+np.ones(3,3)
+    return JCV'''
 
 def w_parfait(A):
     #Calcul de M^-1 * N pour le rayon spectral
