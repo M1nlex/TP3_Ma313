@@ -142,7 +142,7 @@ def comparaison_convergence(taille_max=30, nb_par_taille=10, epsilon=10**(-7), n
 
     #Boucle pour les courbes de la méthode relaxation selon w
     if type_intervalle == 0:
-        space = np.linspace(1, 2, precision_w)
+        space = np.linspace(1, 2, precision_w, endpoint=0)
     if type_intervalle == 1:
         space  = np.linspace(0.1, 2, precision_w, endpoint=0)
     for w in space :
