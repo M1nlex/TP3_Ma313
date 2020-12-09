@@ -141,7 +141,8 @@ def comparaison_convergence(taille_max=30, nb_par_taille=10, epsilon=10**(-7), n
         plt.plot(L_N , L_vconverg_moyen_jacobi , "-", label = "Jacobi")
 
     #Boucle pour les courbes de la méthode relaxation selon w
-    for w in np.linspace(1, 2, precision_w):
+    #for w in np.linspace(1, 2, precision_w):
+    for w in np.linspace(0.1, 2, precision_w, endpoint=0):
         L_iterr_moyen = []
         L_vconverg_moyen = []
         for i in L_values_tot:
@@ -311,6 +312,93 @@ def w_parfait(A):
     r = rayon_spectral(B)
     w = 1 + (( r/( 1+np.sqrt( 1-(r**2) ) ) )**2)
     return w
+
+
+def comparaison_convergence_wparfait(taille_max=30, nb_par_taille=10, epsilon=10**(-7), nitermax=100, type=0):
+    L_N = []
+
+    L_iterr_moyen_gauss = []
+    L_vconverg_moyen_gauss = []
+
+    L_iterr_moyen_jacobi = []
+    L_vconverg_moyen_jacobi = []
+
+    L_iterr_moyen_relaxation = []
+    L_vconverg_moyen_relaxation = []
+
+    for i in range(2,taille_max):
+        L_N.append(i)
+
+        L_iterr_gauss = []
+        L_vconverg_gauss = []
+
+        L_iterr_jacobi = []
+        L_vconverg_jacobi = []
+
+        L_iterr_relaxation = []
+        L_vconverg_relaxation = []
+
+        for j in range(0, nb_par_taille):
+            A = diagonale_dominante(i)
+            B = np.transpose(np.random.randn(1,i))
+            x0 = np.ones((i,1))
+
+            x1, iterr1, eps1 = MIGaussSeidel(A, B, x0, epsilon, nitermax)
+            x2, iterr2, eps2 = mijacobi(A, B, x0, epsilon, nitermax)
+            w = w_parfait(A)
+            x3, iterr3, eps3 = MIRelaxation(A, B, x0, epsilon, nitermax, w=w)
+
+            L_iterr_gauss.append(iterr1)
+            L_vconverg_gauss.append(1/iterr1)
+
+            L_iterr_jacobi.append(iterr2)
+            L_vconverg_jacobi.append(1/iterr2)
+
+            L_iterr_relaxation.append(iterr3)
+            L_vconverg_relaxation.append(1/iterr3)
+
+        #Ajout moyennes Gauss
+        iterr_moyen_gauss = sum(L_iterr_gauss)/nb_par_taille
+        L_iterr_moyen_gauss.append(iterr_moyen_gauss)
+
+        vconverg_moyen_gauss = sum(L_vconverg_gauss)/nb_par_taille
+        L_vconverg_moyen_gauss.append(vconverg_moyen_gauss)
+
+        #Ajout moyennes Jacobi
+        iterr_moyen_jacobi = sum(L_iterr_jacobi)/nb_par_taille
+        L_iterr_moyen_jacobi.append(iterr_moyen_jacobi)
+
+        vconverg_moyen_jacobi = sum(L_vconverg_jacobi)/nb_par_taille
+        L_vconverg_moyen_jacobi.append(vconverg_moyen_jacobi)
+
+        #Ajout moyennes relaxation
+        iterr_moyen_relaxation = sum(L_iterr_relaxation)/nb_par_taille
+        L_iterr_moyen_relaxation.append(iterr_moyen_relaxation)
+
+        vconverg_moyen_relaxation = sum(L_vconverg_relaxation)/nb_par_taille
+        L_vconverg_moyen_relaxation.append(vconverg_moyen_relaxation)
+
+    #Ajouts courbes Gauss et Jacobi
+    if type == 0:
+        plt.plot(L_N , L_iterr_moyen_gauss , "-", label = "Gauss")
+        plt.plot(L_N , L_iterr_moyen_jacobi , "-", label = "Jacobi")
+        plt.plot(L_N , L_iterr_moyen_relaxation , "-", label = "Relaxation (w optimal)")
+    if type == 1:
+        plt.plot(L_N , L_vconverg_moyen_gauss , "-", label = "Gauss")
+        plt.plot(L_N , L_vconverg_moyen_jacobi , "-", label = "Jacobi")
+        plt.plot(L_N , L_vconverg_moyen_relaxation , "-", label = "Relaxation (w optimal)")
+
+    #Réglages graphique
+    if type == 0:
+        plt.ylabel("Nombre ittérations")
+    if type == 1:
+        plt.ylabel("Vitesse de convergence")
+    plt.xlabel("Taille matrice")
+    #plt.legend(loc = "upper left")
+    plt.legend(loc = 'lower right')
+
+    plt.show()
+
 
 # Création des matrices : A TESTER
 
