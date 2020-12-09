@@ -166,10 +166,12 @@ def w_optimal(n_max = 10, epsilon = 10**(-7) , nitermax = 100 , nb_matrix_max = 
 
     plt.show()
 
+
 def rayon_spectral(A):
     L1, L2 = np.linalg.eig(A)
     R = max( [abs(number) for number in L1] )
     return R
+
 
 def i_en_fonction_de_e(type_matrice=1, precision_max=20, n=100):
     e = []
@@ -228,7 +230,8 @@ def w_parfait(A):
     w = 1 + (( r/( 1+np.sqrt( 1-(r**2) ) ) )**2)
     return w
 
-#Création des matrices : A TESTER
+# Création des matrices : A TESTER
+
 
 def Matrice_A1 (n=100):
     A = np.zeros((n,n))
@@ -241,12 +244,14 @@ def Matrice_A1 (n=100):
     #print (A)
     return A
 
+
 def Vecteur_b (n=100):
     b = np.zeros((n,1))
     for i in range (n):
         b[i,0] = np.cos(i/8)
     #print (b)
     return b
+
 
 def Matrice_A2 (n=100):
     A = np.zeros((n,n))
@@ -255,6 +260,7 @@ def Matrice_A2 (n=100):
             A[i,j] = 1/(1 + 3*abs(i-j))
     #print (A)
     return A
+
 
 def diagonale_dominante(n,x=1):
     A = np.zeros((n,n))
